@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibraryNUnit", "ClassLibraryNUnit\ClassLibraryNUnit.csproj", "{986CCCC9-46EC-4E85-B7A9-547354D395C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibraryNUnit.Tests", "ClassLibraryNUnit.Tests\ClassLibraryNUnit.Tests.csproj", "{9B0383B5-1168-43DF-B312-FE897314ED1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibraryNUnit.Tests", "ClassLibraryNUnit.Tests\ClassLibraryNUnit.Tests.csproj", "{9B0383B5-1168-43DF-B312-FE897314ED1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibraryNUintWithExcel.Tests", "ClassLibraryNUintWithExcel.Tests\ClassLibraryNUintWithExcel.Tests.csproj", "{8D5ADAA1-7C3C-481E-8267-558464FE5486}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9B0383B5-1168-43DF-B312-FE897314ED1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B0383B5-1168-43DF-B312-FE897314ED1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B0383B5-1168-43DF-B312-FE897314ED1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D5ADAA1-7C3C-481E-8267-558464FE5486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5ADAA1-7C3C-481E-8267-558464FE5486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D5ADAA1-7C3C-481E-8267-558464FE5486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D5ADAA1-7C3C-481E-8267-558464FE5486}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
