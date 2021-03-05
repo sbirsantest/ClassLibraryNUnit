@@ -15,7 +15,13 @@ namespace ClassLibraryNUintWithExcel.Tests
 			{
 				using (var reader = ExcelReaderFactory.CreateReader(stream))
 				{
-					_dataSet = reader.AsDataSet();
+					_dataSet = reader.AsDataSet(new ExcelDataSetConfiguration()
+					{
+						ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+						{
+							UseHeaderRow = true
+						}
+					});
 				}
 			}
 
