@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ClassLibraryNUnit\ClassLibraryNUnit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="TestFiles\CalculatorTestData.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
