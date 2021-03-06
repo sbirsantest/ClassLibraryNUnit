@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 
 [SetUpFixture]
-public static class ExcelHelper
+public class ExcelHelper
 {
 	private static DataSet _dataSet;
 
@@ -19,15 +19,32 @@ public static class ExcelHelper
 
 	public static List<ClassLibraryNUintWithExcel.Tests.CalculatorTestData> CalculatorAddTestData
 	{
-		get { return _calculatorAddTestData; }
+		get
+		{
+			if (_calculatorAddTestData == null)
+			{
+				SetAddTestData();
+			}
+			return _calculatorAddTestData;
+		}
 		set { _calculatorAddTestData = value; }
 	}
 
 	public static List<ClassLibraryNUintWithExcel.Tests.CalculatorTestData> CalculatorSubtarctTestData
 	{
-		get { return _calculatorSubtarctTestData; }
+		//get { return _calculatorSubtarctTestData; }
+		get
+		{
+			if (_calculatorSubtarctTestData == null)
+			{
+				SetSubtractTestData();
+			}
+			return _calculatorSubtarctTestData;
+		}
+
 		set { _calculatorSubtarctTestData = value; }
 	}
+
 	////[OneTimeSetUp]
 	//public static void AssemblySetup()
 	//{
@@ -42,7 +59,7 @@ public static class ExcelHelper
 	//	}
 	//}
 
-	public static void LoadTestDataFromExcel()
+	private static void LoadTestDataFromExcel()
 	{
 		try
 		{
@@ -71,23 +88,31 @@ public static class ExcelHelper
 		}
 	}
 
-	public static void SetAddTestData()
+	private static void SetAddTestData()
 	{
 		try
 		{
-			var addTestDataTable = _dataSet?.Tables["AddTestData"];
-
-			if (addTestDataTable != null)
+			if (_dataSet == null)
 			{
-				_calculatorAddTestData = (from testDataRow in addTestDataTable.AsEnumerable()
-												  select
-												  new ClassLibraryNUintWithExcel.Tests.CalculatorTestData
-													 (
-														 Convert.ToInt32(testDataRow["InputData1"]),
-														 Convert.ToInt32(testDataRow["InputData2"]),
-														 Convert.ToInt32(testDataRow["ExpectedResult"])
-													 )
-								 ).ToList();
+				LoadTestDataFromExcel();
+			}
+
+			if (_calculatorAddTestData == null)
+			{
+				var addTestDataTable = _dataSet?.Tables["AddTestData"];
+
+				if (addTestDataTable != null)
+				{
+					_calculatorAddTestData = (from testDataRow in addTestDataTable.AsEnumerable()
+													  select
+													  new ClassLibraryNUintWithExcel.Tests.CalculatorTestData
+														 (
+															 Convert.ToInt32(testDataRow["InputData1"]),
+															 Convert.ToInt32(testDataRow["InputData2"]),
+															 Convert.ToInt32(testDataRow["ExpectedResult"])
+														 )
+									 ).ToList();
+				}
 			}
 		}
 		catch (Exception)
@@ -96,23 +121,31 @@ public static class ExcelHelper
 		}
 	}
 
-	public static void SetSubtractTestData()
+	private static void SetSubtractTestData()
 	{
 		try
 		{
-			var addTestDataTable = _dataSet?.Tables["SubtractTestData"];
-
-			if (addTestDataTable != null)
+			if (_dataSet == null)
 			{
-				_calculatorSubtarctTestData = (from testDataRow in addTestDataTable.AsEnumerable()
-												  select
-												  new ClassLibraryNUintWithExcel.Tests.CalculatorTestData
-													 (
-														 Convert.ToInt32(testDataRow["InputData1"]),
-														 Convert.ToInt32(testDataRow["InputData2"]),
-														 Convert.ToInt32(testDataRow["ExpectedResult"])
-													 )
-								 ).ToList();
+				LoadTestDataFromExcel();
+			}
+
+			if (_calculatorSubtarctTestData == null)
+			{
+				var addTestDataTable = _dataSet?.Tables["SubtractTestData"];
+
+				if (addTestDataTable != null)
+				{
+					_calculatorSubtarctTestData = (from testDataRow in addTestDataTable.AsEnumerable()
+															 select
+															 new ClassLibraryNUintWithExcel.Tests.CalculatorTestData
+																(
+																	Convert.ToInt32(testDataRow["InputData1"]),
+																	Convert.ToInt32(testDataRow["InputData2"]),
+																	Convert.ToInt32(testDataRow["ExpectedResult"])
+																)
+									 ).ToList();
+				}
 			}
 		}
 		catch (Exception)
@@ -131,8 +164,6 @@ namespace ClassLibraryNUintWithExcel.Tests
 		{
 			try
 			{
-				ExcelHelper.LoadTestDataFromExcel();
-				ExcelHelper.SetAddTestData();
 				foreach (var item in ExcelHelper.CalculatorAddTestData)
 				{
 					Add(new TestCaseData(item));
@@ -151,8 +182,6 @@ namespace ClassLibraryNUintWithExcel.Tests
 		{
 			try
 			{
-				ExcelHelper.LoadTestDataFromExcel();
-				ExcelHelper.SetSubtractTestData();
 				foreach (var item in ExcelHelper.CalculatorSubtarctTestData)
 				{
 					Add(new TestCaseData(item));
@@ -167,17 +196,10 @@ namespace ClassLibraryNUintWithExcel.Tests
 
 	public class CalculatorFactoryTestCases
 	{
-		public CalculatorFactoryTestCases()
-		{
-			ExcelHelper.LoadTestDataFromExcel();
-		}
-
 		public static IEnumerable AddTestCases
 		{
 			get
 			{
-				ExcelHelper.LoadTestDataFromExcel();
-				ExcelHelper.SetAddTestData();
 				foreach (var item in ExcelHelper.CalculatorAddTestData)
 				{
 					yield return item;
@@ -189,8 +211,6 @@ namespace ClassLibraryNUintWithExcel.Tests
 		{
 			get
 			{
-				ExcelHelper.LoadTestDataFromExcel();
-				ExcelHelper.SetSubtractTestData();
 				foreach (var item in ExcelHelper.CalculatorSubtarctTestData)
 				{
 					yield return new TestCaseData(item);
@@ -207,7 +227,6 @@ namespace ClassLibraryNUintWithExcel.Tests
 		public void TestFixtureSetUp()
 		{
 			// Setup once per fixture
-			//ExcelHelper.LoadTestDataFromExcel();
 		}
 
 		[SetUp]
@@ -231,7 +250,7 @@ namespace ClassLibraryNUintWithExcel.Tests
 			Assert.That(result, Is.EqualTo(5));
 		}
 
-		[TestCaseSource(typeof(CalculatorFactoryTestCases), "AddTestCases")]
+		[TestCaseSource(typeof(CalculatorFactoryTestCases), nameof(CalculatorFactoryTestCases.AddTestCases))]
 		public void Calculator_Add1_ShouldReturnExpectedResult(CalculatorTestData ctd)
 		{
 			var result = _calculator.Add(ctd.A, ctd.B);
@@ -245,7 +264,7 @@ namespace ClassLibraryNUintWithExcel.Tests
 			Assert.That(result, Is.EqualTo(ctd.Result));
 		}
 
-		[TestCaseSource(typeof(CalculatorFactoryTestCases), "SubtractTestCases")]
+		[TestCaseSource(typeof(CalculatorFactoryTestCases), nameof(CalculatorFactoryTestCases.SubtractTestCases))]
 		public void Calculator_Subtract_ShouldReturnExpectedResult(CalculatorTestData ctd)
 		{
 			var result = _calculator.Subtract(ctd.A, ctd.B);
